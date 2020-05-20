@@ -1,0 +1,13 @@
+.vs
+Debug
+Release
+
+modules/discord/*.cpp
+modules/discord/*.dll
+modules/discord/*.h
+modules/discord/*.lib
+
+modules/itunes/*.c
+modules/itunes/*.h
+
+*.user
