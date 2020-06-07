@@ -21,6 +21,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="LICENSE" />
+    <None Include="modules\README.md" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>

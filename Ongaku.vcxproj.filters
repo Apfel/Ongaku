@@ -4,14 +4,17 @@
     <Filter Include="Metadata">
       <UniqueIdentifier>{b2d49ed2-f560-4d61-8547-a989d357c820}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Discord">
-      <UniqueIdentifier>{7e00bf37-c446-41a7-b055-39cd94726c04}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Ongaku">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="iTunes">
+    <Filter Include="Modules">
+      <UniqueIdentifier>{391eb088-5d1d-46f6-bfd1-484aeb08a2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Discord">
+      <UniqueIdentifier>{7e00bf37-c446-41a7-b055-39cd94726c04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\iTunes">
       <UniqueIdentifier>{37ae576a-29b7-49aa-83fe-7b1974ceadcc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -25,6 +28,9 @@
     <None Include="LICENSE">
       <Filter>Metadata</Filter>
     </None>
+    <None Include="modules\README.md">
+      <Filter>Modules</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\icon.cpp">
@@ -34,49 +40,49 @@
       <Filter>Ongaku</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\achievement_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\activity_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\application_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\core.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\image_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\lobby_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\network_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\overlay_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\relationship_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\storage_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\store_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\types.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\user_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\discord\voice_manager.cpp">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClCompile>
     <ClCompile Include="modules\itunes\iTunesCOMInterface_i.c">
-      <Filter>iTunes</Filter>
+      <Filter>Modules\iTunes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,58 +90,58 @@
       <Filter>Ongaku</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\achievement_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\activity_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\application_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\core.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\discord.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\event.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\ffi.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\image_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\lobby_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\network_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\overlay_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\relationship_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\storage_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\store_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\types.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\user_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\discord\voice_manager.h">
-      <Filter>Discord</Filter>
+      <Filter>Modules\Discord</Filter>
     </ClInclude>
     <ClInclude Include="modules\itunes\iTunesCOMInterface.h">
-      <Filter>iTunes</Filter>
+      <Filter>Modules\iTunes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

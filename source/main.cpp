@@ -65,7 +65,7 @@ std::string tcharToString(const TCHAR* text)
     return content;
 }
 
-void ErrorBox(const char* message) { MessageBox(window, (LPCWSTR)message, L"Ongaku", MB_OK | MB_ICONERROR); }
+void ErrorBox(const char* message) { MessageBoxA(window, (LPCSTR)message, "Ongaku", MB_OK | MB_ICONERROR); }
 
 HICON GetIcon()
 { 
@@ -147,6 +147,10 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prevInst, LPSTR cmdLine, int cmdSho
     {
         std::string content = "Failed to connect to Discord: \"" + std::to_string(static_cast<int>(result)) + "\".";
         ErrorBox(content.c_str());
+
+        delete core;
+        delete app;
+
         return 1;
     }
 
@@ -291,7 +295,6 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prevInst, LPSTR cmdLine, int cmdSho
 
     activity = discord::Activity{};
     app->Core->ActivityManager().UpdateActivity(activity, nullptr);
-    ::CoDisconnectObject(NULL, 0);
 
     return 0;
 }
