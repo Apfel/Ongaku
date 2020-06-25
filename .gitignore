@@ -10,4 +10,5 @@ modules/discord/*.lib
 modules/itunes/*.c
 modules/itunes/*.h
 
+*.aps
 *.user
