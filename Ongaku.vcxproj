@@ -70,7 +70,7 @@
     <ClInclude Include="modules\discord\user_manager.h" />
     <ClInclude Include="modules\discord\voice_manager.h" />
     <ClInclude Include="modules\itunes\iTunesCOMInterface.h" />
-    <ClInclude Include="source\icon.hpp" />
+    <ClInclude Include="source\icon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

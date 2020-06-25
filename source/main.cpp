@@ -19,7 +19,10 @@
 
 #define APP_ID 706172143624388670
 
-#include "icon.hpp"
+#pragma warning (disable:26451)
+#pragma warning (disable:26812)
+
+#include "icon.h"
 
 #include <chrono>
 #include <string>
@@ -83,38 +86,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
     switch (iMsg)
     {
-        case WM_CREATE:
-            memset(&nid, 0, sizeof(nid));
+    case WM_CREATE:
+        memset(&nid, 0, sizeof(nid));
 
-            nid.cbSize = sizeof(nid);
-            nid.hWnd = hWnd;
-            nid.uID = 0;
-            nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
-            nid.uCallbackMessage = WM_APP + 1;
-            nid.hIcon = GetIcon();
+        nid.cbSize = sizeof(nid);
+        nid.hWnd = hWnd;
+        nid.uID = 0;
+        nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+        nid.uCallbackMessage = WM_APP + 1;
+        nid.hIcon = GetIcon();
 
-            lstrcpy(nid.szTip, L"Ongaku (Running, right-click here to quit.)");
+        lstrcpy(nid.szTip, L"Ongaku (Running, right-click here to quit.)");
 
-            Shell_NotifyIcon(NIM_ADD, &nid);
-            Shell_NotifyIcon(NIM_SETVERSION, &nid);
-            return 0;
+        Shell_NotifyIcon(NIM_ADD, &nid);
+        Shell_NotifyIcon(NIM_SETVERSION, &nid);
+        return 0;
 
-        case WM_APP + 1:
-            switch (lParam)
-            {
-                case WM_LBUTTONDBLCLK:
-                case WM_RBUTTONDOWN:
-                case WM_CONTEXTMENU:
-                    interrupted = true;
-                    break;
-            }
+    case WM_APP + 1:
+        switch (lParam)
+        {
+            case WM_LBUTTONDBLCLK:
+            case WM_RBUTTONDOWN:
+            case WM_CONTEXTMENU:
+                interrupted = true;
+                break;
+        }
 
-            break;
+        break;
 
-        case WM_DESTROY:
-            Shell_NotifyIcon(NIM_DELETE, &nid);
-            PostQuitMessage(0);
-            return 0;
+    case WM_DESTROY:
+        Shell_NotifyIcon(NIM_DELETE, &nid);
+        PostQuitMessage(0);
+        return 0;
     }
     
     return DefWindowProc(hWnd, iMsg, wParam, lParam);
@@ -207,7 +210,7 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prevInst, LPSTR cmdLine, int cmdSho
             break;
         }
 
-        if (state == 0)
+        if (state == NULL)
         {
             activity.SetDetails("");
             activity.SetState("Paused.");
@@ -282,19 +285,17 @@ int WINAPI WinMain(HINSTANCE inst, HINSTANCE prevInst, LPSTR cmdLine, int cmdSho
         app->Core->ActivityManager().UpdateActivity(activity, [](discord::Result result)
         {
             if (result == discord::Result::Ok) return;
-
+            
             std::string content = "Failed to update activity: \"" + std::to_string(static_cast<int>(result)) + "\"";
             ErrorBox(content.c_str());
             interrupted = true;
         });
 
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::this_thread::sleep_for(std::chrono::seconds(6));
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-
-    activity = discord::Activity{};
-    app->Core->ActivityManager().UpdateActivity(activity, nullptr);
+    itunes->Release();
+    app->Core->ActivityManager().ClearActivity(nullptr);
 
     return 0;
 }

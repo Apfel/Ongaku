@@ -86,9 +86,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\icon.hpp">
-      <Filter>Ongaku</Filter>
-    </ClInclude>
     <ClInclude Include="modules\discord\achievement_manager.h">
       <Filter>Modules\Discord</Filter>
     </ClInclude>
@@ -142,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="modules\itunes\iTunesCOMInterface.h">
       <Filter>Modules\iTunes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\icon.h">
+      <Filter>Ongaku</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

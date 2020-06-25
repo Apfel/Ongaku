@@ -1,4 +1,4 @@
-#include "icon.hpp"
+#include "icon.h"
 
 const long int IconSize = 204862;
 const unsigned char Icon[204862] = {
