@@ -1,4 +1,4 @@
-# Ongaku for Windows
+# Ongaku
 A port of **[Ongaku](https://github.com/spotlightishere/Ongaku)** for Windows.  
 Ongaku allows you to share what you're listening to and/or watching on iTunes in Discord.  
 Requires **[Discord](https://discordapp.com)** and **[iTunes](https://www.apple.com/itunes/)**.  
