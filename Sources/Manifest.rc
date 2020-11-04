@@ -17,9 +17,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-100 ICON MOVEABLE PURE LOADONCALL DISCARDABLE "Icons/Default.ico"
-101 ICON MOVEABLE PURE LOADONCALL DISCARDABLE "Icons/Connected.ico"
-102 ICON MOVEABLE PURE LOADONCALL DISCARDABLE "Icons/Error.ico"
+100 ICON "Icons/Default.ico"
+101 ICON "Icons/Connected.ico"
+102 ICON "Icons/Error.ico"
 
 1 VERSIONINFO
 
@@ -43,7 +43,7 @@ BEGIN
             VALUE "FileDescription", "Ongaku"
             VALUE "FileVersion", "1.0.0"
             VALUE "InternalName", "Ongaku"
-            VALUE "LegalCopyright", ""
+            VALUE "LegalCopyright", "Check out the LICENSE file on GitHub: https://github.com/Apfel/Ongaku"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "Ongaku.exe"
             VALUE "PrivateBuild", ""

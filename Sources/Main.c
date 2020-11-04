@@ -55,9 +55,12 @@ LRESULT CALLBACK Window_Process(HWND window, UINT message, WPARAM high, LPARAM l
         wchar_t* message = TEXT("Ongaku (Setting up, right-click here to quit.)");
         wcscpy_s(nid.szTip, sizeof(wchar_t) * 128, message);
 
-        Shell_NotifyIcon(NIM_DELETE, &nid);
+        if (!Shell_NotifyIcon(NIM_ADD, &nid))
+        {
+            Shell_NotifyIcon(NIM_DELETE, &nid);
+            Shell_NotifyIcon(NIM_ADD, &nid);
+        }
 
-        Shell_NotifyIcon(NIM_ADD, &nid);        
         Shell_NotifyIcon(NIM_SETVERSION, &nid);
 
         DestroyIcon(icon);
@@ -99,6 +102,7 @@ bool Update_Notification(const wchar_t* message, uint32_t icon_id)
     wcscpy_s(nid.szTip, sizeof(wchar_t) * wcslen(message), message);
 
     bool result = Shell_NotifyIcon(NIM_MODIFY, &nid);
+
     DestroyIcon(icon);
 
     return result;
