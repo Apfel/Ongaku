@@ -1,0 +1,22 @@
+{
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cSpell.allowCompoundWords": true,
+    "cmake.buildDirectory": "${workspaceFolder}/Build",
+    "files.associations": {
+        "*.uplugin": "json",
+        "*.rc": "c",
+        "*.config": "xml",
+        "*.json": "json",
+        "*.h": "c",
+        "array": "c",
+        "functional": "c",
+        "system_error": "c",
+        "type_traits": "c",
+        "xlocmon": "c",
+        "xtr1common": "c",
+        "algorithm": "c",
+        "regex": "c",
+        "xlocale": "c",
+        "xstring": "c"
+    }
+}

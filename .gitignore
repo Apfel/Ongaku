@@ -1,14 +1,6 @@
 .vs
-Debug
-Release
 
-modules/discord/*.cpp
-modules/discord/*.dll
-modules/discord/*.h
-modules/discord/*.lib
+Build
 
-modules/itunes/*.c
-modules/itunes/*.h
-
-*.aps
-*.user
+ThirdParty/Discord
+ThirdParty/iTunes

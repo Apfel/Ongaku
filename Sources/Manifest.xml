@@ -1,5 +1,4 @@
-MIT License
-
+<!--
 Copyright (c) 2020 Apfel
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,3 +17,15 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+-->
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+<assemblyIdentity name="Ongaku" processorArchitecture="amd64" version="1.0.0.0" type="win32" />
+<description>Discord Rich Presence for iTunes</description>
+<dependency>
+    <dependentAssembly>
+        <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" processorArchitecture="amd64" publicKeyToken="6595b64144ccf1df" language="*" />
+    </dependentAssembly>
+</dependency>
+</assembly>
