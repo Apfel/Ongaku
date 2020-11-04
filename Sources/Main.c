@@ -83,9 +83,9 @@ LRESULT CALLBACK Window_Process(HWND window, UINT message, WPARAM high, LPARAM l
     return DefWindowProc(window, message, high, low);
 }
 
-bool Update_Notification(const wchar_t* message)
+bool Update_Notification(const wchar_t* message, uint32_t icon_id)
 {
-    HICON icon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(100));
+    HICON icon = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(icon_id));
 
     NOTIFYICONDATA nid;
 
@@ -111,11 +111,14 @@ void Ready_Handler(const DiscordUser* user)
     wchar_t* message = calloc(129, sizeof(wchar_t));
     swprintf_s(message, 128, TEXT("Ongaku (Connected as %hs#%hs, right-click here to quit.)"), user->username, user->discriminator);
 
-    bool result = Update_Notification(message);
+    Update_Notification(message, 101);
 
     free(message);
+}
 
-    if (!result) __debugbreak();
+void Disconnect_Message(LPVOID unused)
+{
+    MessageBox(GetActiveWindow(), TEXT("The connection to Discord got cut. Please restart Ongaku."), TEXT("Ongaku"), MB_OK);
 }
 
 void Disconnect_Handler(int error_code, const char* error_message)
@@ -123,11 +126,11 @@ void Disconnect_Handler(int error_code, const char* error_message)
     wchar_t* message = calloc(129, sizeof(wchar_t));
     swprintf_s(message, 128, TEXT("Ongaku (Disconnected, error %d, right-click here to quit.)"), error_code);
 
-    bool result = Update_Notification(message);
+    Update_Notification(message, 102);
 
     free(message);
 
-    if (!result) __debugbreak();
+    CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)&Disconnect_Message, NULL, 0, 0);
 }
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR arguments, int show_window)
@@ -178,9 +181,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
         break;
     
     case iTunes_Result_iTunes_Missing:
-        wchar_t imessage[75] = { 0 };
-        swprintf_s(imessage, 75, TEXT("It seems that iTunes may be missing or corrupt; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
-        MessageBox(window, imessage, TEXT("Ongaku"), MB_OK);
+        wchar_t i_message[75] = { 0 };
+        swprintf_s(i_message, 75, TEXT("It seems that iTunes may be missing or corrupt; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
+        MessageBox(window, i_message, TEXT("Ongaku"), MB_OK);
 
         Discord_Shutdown();
         DestroyWindow(window);
@@ -188,9 +191,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
         return 2;
 
     default:
-        wchar_t nmessage[75] = { 0 };
-        swprintf_s(nmessage, 75, TEXT("An error occurred while connecting to iTunes; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
-        MessageBox(window, nmessage, TEXT("Ongaku"), MB_OK);
+        wchar_t n_message[75] = { 0 };
+        swprintf_s(n_message, 75, TEXT("An error occurred while connecting to iTunes; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
+        MessageBox(window, n_message, TEXT("Ongaku"), MB_OK);
 
         Discord_Shutdown();
         DestroyWindow(window);
