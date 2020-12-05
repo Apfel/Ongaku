@@ -91,6 +91,8 @@ uint8_t iTunes_Get_State(iTunes_Instance* instance, iTunes_State* state)
         break;
     }
 
+    if (player_state == iTunes_Player_State_Stopped) return iTunes_Result_Success;
+
     IITTrack* track = NULL;
     result = instance->itunes->get_CurrentTrack(&track);
     if (FAILED(result))
@@ -145,4 +147,6 @@ DWORD iTunes_GetLastError_Proxy(iTunes_Instance* instance)
 void iTunes_Destroy(iTunes_Instance* instance)
 {
     if (instance->itunes != NULL) instance->itunes->Release();
+
+    ::CoUninitialize();
 }
