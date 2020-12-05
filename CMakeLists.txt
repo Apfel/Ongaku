@@ -47,6 +47,10 @@ add_executable(Ongaku
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W3 /WX /Wv:18")
 set_target_properties(Ongaku PROPERTIES LINK_FLAGS "/subsystem:Windows")
 
+target_link_options(Ongaku
+    PUBLIC "/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'"
+)
+
 # Discord Rich Presence
 
 target_include_directories(Ongaku PUBLIC ${CMAKE_CURRENT_LIST_DIR}/ThirdParty/Discord/${CMAKE_BUILD_TYPE}/include)
@@ -58,3 +62,4 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Modules/iTunes-Wrapper)
 add_dependencies(Ongaku iTunes-Wrapper)
 target_include_directories(Ongaku PUBLIC ${CMAKE_CURRENT_LIST_DIR}/Modules/iTunes-Wrapper)
 target_link_libraries(Ongaku PUBLIC iTunes-Wrapper)
+
