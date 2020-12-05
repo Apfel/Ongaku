@@ -18,7 +18,6 @@
 // SOFTWARE.
 
 #include <Windows.h>
-#include <intrin.h>
 #include <shellapi.h>
 
 #include <stdbool.h>
@@ -33,7 +32,12 @@
 #define LARGE_ICON_NAME "itunes"
 
 const static UINT Notify_Flags  = NIF_ICON | NIF_MESSAGE | NIF_TIP | NIF_GUID;
-static const GUID Notify_GUID = { 0x6de4add7, 0xc4db, 0x416b, { 0x86, 0x14, 0xb, 0xad, 0x5d, 0x29, 0x10, 0xd9 }};
+
+#ifdef _DEBUG
+const static GUID Notify_GUID   = { 0x6de4add7, 0xc4db, 0x416b, { 0x86, 0x14, 0xb, 0xad, 0x5d, 0x29, 0x10, 0xd9 }};
+#else
+const static GUID Notify_GUID   = { 0xd770e1f8, 0x86a2, 0x40ce, { 0xa1, 0xf5, 0xc2, 0x45, 0xba, 0xd4, 0x22, 0xb7 }};
+#endif
 
 LRESULT CALLBACK Window_Process(HWND window, UINT message, WPARAM high, LPARAM low)
 {
@@ -52,19 +56,29 @@ LRESULT CALLBACK Window_Process(HWND window, UINT message, WPARAM high, LPARAM l
         nid.uCallbackMessage    = WM_APP + 1;
         nid.uFlags              = Notify_Flags;
 
-        wchar_t* message = TEXT("Ongaku (Setting up, right-click here to quit.)");
-        wcscpy_s(nid.szTip, sizeof(wchar_t) * 128, message);
+        wchar_t* tip = TEXT("Ongaku (Setting up, right-click here to quit.)");
+        wcscpy(nid.szTip, tip);
 
         if (!Shell_NotifyIcon(NIM_ADD, &nid))
         {
             Shell_NotifyIcon(NIM_DELETE, &nid);
-            Shell_NotifyIcon(NIM_ADD, &nid);
+
+            if (!Shell_NotifyIcon(NIM_ADD, &nid))
+            {
+                MessageBox(window, TEXT("An error occurred while adding the system tray icon."), TEXT("Ongaku"), MB_OK);
+                PostMessageW(window, WM_DESTROY, 0, 0);
+                break;
+            }
         }
 
-        Shell_NotifyIcon(NIM_SETVERSION, &nid);
+        if (!Shell_NotifyIcon(NIM_SETVERSION, &nid))
+        {
+            MessageBox(window, TEXT("An error occurred while adding the system tray icon."), TEXT("Ongaku"), MB_OK);
+            PostMessageW(window, WM_DESTROY, 0, 0);
+            break;
+        }
 
         DestroyIcon(icon);
-
         return 0;
 
     case WM_APP + 1:
@@ -79,11 +93,15 @@ LRESULT CALLBACK Window_Process(HWND window, UINT message, WPARAM high, LPARAM l
 
     case WM_DESTROY:
         Shell_NotifyIcon(NIM_DELETE, &nid);
+        DestroyWindow(window);
         PostQuitMessage(0);
-        return 0;
+        break;
+
+    default:
+        return DefWindowProc(window, message, high, low);
     }
 
-    return DefWindowProc(window, message, high, low);
+    return 0;
 }
 
 bool Update_Notification(const wchar_t* message, uint32_t icon_id)
@@ -99,7 +117,7 @@ bool Update_Notification(const wchar_t* message, uint32_t icon_id)
     nid.hIcon               = icon;
     nid.guidItem            = Notify_GUID;
 
-    wcscpy_s(nid.szTip, sizeof(wchar_t) * wcslen(message), message);
+    wcscpy(nid.szTip, message);
 
     bool result = Shell_NotifyIcon(NIM_MODIFY, &nid);
 
@@ -113,47 +131,50 @@ void Ready_Handler(const DiscordUser* user)
     if (user == NULL) return;
 
     wchar_t* message = calloc(129, sizeof(wchar_t));
-    swprintf_s(message, 128, TEXT("Ongaku (Connected as %hs#%hs, right-click here to quit.)"), user->username, user->discriminator);
+    swprintf(message, 128, TEXT("Ongaku (Connected as %hs#%hs, right-click here to quit.)"), user->username, user->discriminator);
 
     Update_Notification(message, 101);
 
     free(message);
 }
 
-void Disconnect_Message(LPVOID unused)
-{
-    MessageBox(GetActiveWindow(), TEXT("The connection to Discord got cut. Please restart Ongaku."), TEXT("Ongaku"), MB_OK);
-}
-
 void Disconnect_Handler(int error_code, const char* error_message)
 {
     wchar_t* message = calloc(129, sizeof(wchar_t));
-    swprintf_s(message, 128, TEXT("Ongaku (Disconnected, error %d, right-click here to quit.)"), error_code);
+    swprintf(message, 128, TEXT("Ongaku (Disconnected, error %d, right-click here to quit.)"), error_code);
 
     Update_Notification(message, 102);
 
     free(message);
 
-    CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)&Disconnect_Message, NULL, 0, 0);
+    MessageBox(GetActiveWindow(), TEXT("The connection to Discord got cut. Ongaku will exit now."), TEXT("Ongaku"), MB_OK);
+    PostMessageW(GetActiveWindow(), WM_DESTROY, 0, 0);
 }
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR arguments, int show_window)
 {
-    WNDCLASS window_class;
+    WNDCLASSEX window_class;
     ZeroMemory(&window_class, sizeof(window_class));
 
+    window_class.cbSize         = sizeof(WNDCLASSEX);
     window_class.hIcon          = LoadIcon(instance, MAKEINTRESOURCE(100));
     window_class.hInstance      = instance;
     window_class.lpfnWndProc    = Window_Process;
     window_class.lpszClassName  = TEXT("Ongaku");
 
-    RegisterClass(&window_class);
+    if (RegisterClassEx(&window_class) == 0)
+    {
+        wchar_t message[75] = { 0 };
+        swprintf(message, 75, TEXT("An error occurred while registering a window; error code %d."), GetLastError());
+        MessageBox(NULL, message, TEXT("Ongaku"), MB_OK);
+        return 1;
+    }
 
     HWND window = CreateWindow(TEXT("Ongaku"), TEXT("Ongaku"), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, instance, NULL);
     if (window == NULL)
     {
         wchar_t message[75] = { 0 };
-        swprintf_s(message, 75, TEXT("An error occurred while creating a window instance; error code %d."), GetLastError());
+        swprintf(message, 75, TEXT("An error occurred while opening a window; error code %d."), GetLastError());
         MessageBox(NULL, message, TEXT("Ongaku"), MB_OK);
         return 1;
     }
@@ -186,7 +207,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
     
     case iTunes_Result_iTunes_Missing:
         wchar_t i_message[75] = { 0 };
-        swprintf_s(i_message, 75, TEXT("It seems that iTunes may be missing or corrupt; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
+        swprintf(i_message, 75, TEXT("It seems that iTunes may be missing or corrupt; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
         MessageBox(window, i_message, TEXT("Ongaku"), MB_OK);
 
         Discord_Shutdown();
@@ -196,7 +217,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
 
     default:
         wchar_t n_message[75] = { 0 };
-        swprintf_s(n_message, 75, TEXT("An error occurred while connecting to iTunes; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
+        swprintf(n_message, 75, TEXT("An error occurred while connecting to iTunes; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
         MessageBox(window, n_message, TEXT("Ongaku"), MB_OK);
 
         Discord_Shutdown();
@@ -209,7 +230,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
     uint8_t return_code = 0;
     while (true)
     {
-        while (PeekMessage(&message, window, 0, 0, PM_REMOVE))
+        while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
         {
             TranslateMessage(&message); 
             DispatchMessage(&message);
@@ -234,7 +255,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
             Discord_ClearPresence();
 
             wchar_t message[75] = { 0 };
-            swprintf_s(message, 75, TEXT("An error occurred while fetching data from iTunes; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
+            swprintf(message, 75, TEXT("An error occurred while fetching data from iTunes; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
             MessageBox(NULL, message, TEXT("Ongaku"), MB_OK);
 
             return_code = 2;
@@ -243,16 +264,16 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
 
         if (state.State == iTunes_Player_State_Playing)
         {
-            sprintf_s(details, 128, "%ls", state.Title);
-            sprintf_s(state_value, 128, "%ls - %ls", state.Artist, state.Album);
+            snprintf(details, 128, "%ls", state.Title);
+            snprintf(state_value, 128, "%ls - %ls", state.Artist, state.Album);
 
             presence.startTimestamp = time_value - (state.Position);
             presence.endTimestamp   = time_value + (state.Length - state.Position);
         }
         else
         {
-            sprintf_s(details, 128, "");
-            sprintf_s(state_value, 128, "Nothing in queue.");
+            snprintf(details, 128, "");
+            snprintf(state_value, 128, "Nothing in queue.");
             presence.startTimestamp = 0;
             presence.endTimestamp   = 0;
         }
@@ -271,7 +292,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
 
     iTunes_Destroy(itunes);
 
-    DestroyWindow(window);
+    UnregisterClass(window_class.lpszClassName, instance);
 
     return return_code;
 }

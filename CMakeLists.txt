@@ -30,11 +30,13 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+message("-- > Configuration for third-party packages set to \"${CMAKE_BUILD_TYPE}\".")
+
 if (NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/ThirdParty)
     message(WARNING "The ThiryParty folder is missing, you might encounter errors due to missing packages; please check out the README file.")
 endif()
 
-add_definitions(-DWIN32_LEAN_AND_MEAN -DUNICODE)
+add_definitions(-DWIN32_LEAN_AND_MEAN -DUNICODE -D_CRT_SECURE_NO_DEPRECATE)
 
 add_executable(Ongaku
     ${CMAKE_CURRENT_LIST_DIR}/Sources/Manifest.rc
@@ -42,7 +44,8 @@ add_executable(Ongaku
     ${CMAKE_CURRENT_LIST_DIR}/Sources/Main.c
 )
 
-set_target_properties(Ongaku PROPERTIES LINK_FLAGS "/SUBSYSTEM:WINDOWS")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W3 /WX /Wv:18")
+set_target_properties(Ongaku PROPERTIES LINK_FLAGS "/subsystem:Windows")
 
 # Discord Rich Presence
 
