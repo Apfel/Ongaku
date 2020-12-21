@@ -85,7 +85,7 @@ uint8_t iTunes_Get_State(iTunes_Instance* instance, iTunes_State* state)
     case ITPlayerStatePlaying:
         state->State = iTunes_Player_State_Playing;
         break;
-    
+
     default:
         state->State = iTunes_Player_State_Stopped;
         break;

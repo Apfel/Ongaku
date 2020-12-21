@@ -204,7 +204,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
     {
     case iTunes_Result_Success:
         break;
-    
+
     case iTunes_Result_iTunes_Missing:
         wchar_t i_message[75] = { 0 };
         swprintf(i_message, 75, TEXT("It seems that iTunes may be missing or corrupt; error code %d-%d."), result, iTunes_GetLastError_Proxy(itunes));
@@ -212,7 +212,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
 
         Discord_Shutdown();
         DestroyWindow(window);
-        
+
         return 2;
 
     default:
@@ -222,7 +222,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
 
         Discord_Shutdown();
         DestroyWindow(window);
-        
+
         return 2;
     }
 
@@ -232,7 +232,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE previous_instance, LPWSTR argu
     {
         while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&message); 
+            TranslateMessage(&message);
             DispatchMessage(&message);
         }
 

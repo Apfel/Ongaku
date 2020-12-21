@@ -62,4 +62,3 @@ add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/Modules/iTunes-Wrapper)
 add_dependencies(Ongaku iTunes-Wrapper)
 target_include_directories(Ongaku PUBLIC ${CMAKE_CURRENT_LIST_DIR}/Modules/iTunes-Wrapper)
 target_link_libraries(Ongaku PUBLIC iTunes-Wrapper)
-
